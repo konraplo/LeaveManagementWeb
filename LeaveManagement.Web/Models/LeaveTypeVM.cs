@@ -7,8 +7,8 @@ namespace LeaveManagement.Web.Models
     {
         public int Id { get; set; }
 
-        [Display(Name = "Default number of days")]
         public string Name { get; set; }
+        [Display(Name = "Default number of days")]
         public int DefaultDays { get; set; }
     }
 }
