@@ -7,8 +7,12 @@ namespace LeaveManagement.Web.Models
     {
         public int Id { get; set; }
 
+        [Display(Name = "Leave type name")]
+        [Required]
         public string Name { get; set; }
         [Display(Name = "Default number of days")]
+        [Required]
+        [Range(1, 25, ErrorMessage = "Enter valid number")]
         public int DefaultDays { get; set; }
     }
 }
