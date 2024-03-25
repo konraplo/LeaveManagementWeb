@@ -4,6 +4,7 @@ using LeaveManagement.Web.Data;
 using LeaveManagement.Web.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
