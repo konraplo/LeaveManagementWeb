@@ -4,6 +4,7 @@ using LeaveManagement.Web.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagement.Web.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240326170043_AddedDefaultUsersAndRoles")]
+    partial class AddedDefaultUsersAndRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,43 +110,39 @@ namespace LeaveManagement.Web.Data.Migrations
                         {
                             Id = "5dca4089-05b4-492f-9c3b-47ebccf33688",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "35214c95-ae5c-4e56-a4a1-7d3ae47ad8a2",
+                            ConcurrencyStamp = "5e31dea8-5147-48c7-974f-79ca19450a85",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfJoin = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "admi@admin.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             Firstname = "System",
                             Lastname = "Admin",
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMI@ADMIN.COM",
-                            NormalizedUserName = "ADMI@ADMIN.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEey2KhFjgDB2nm/X/ArMY43PrZLD/eGNkZrNXgAtMUIn6QfWzjhBXgl/eQ+kclY3g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGJSFaq6xMawCQnzooB6fouSnHCn8z/jbQNhZmGKY00HJuO7FHijbCBJlXX6u7iitA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "0d229d75-2326-44b9-872b-797756ef9c12",
+                            SecurityStamp = "0431f61a-e1fa-4ead-8ccd-86b6c53487a4",
                             TaxId = "1111",
-                            TwoFactorEnabled = false,
-                            UserName = "admi@admin.com"
+                            TwoFactorEnabled = false
                         },
                         new
                         {
                             Id = "a569cdd0-692e-4a6e-ab4e-297edf553a3e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f73d451d-527c-4b74-92bc-adf8201d1245",
+                            ConcurrencyStamp = "ff2e93d4-099f-4db4-b378-86c75866524c",
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfJoin = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "test@test.com",
-                            EmailConfirmed = true,
+                            EmailConfirmed = false,
                             Firstname = "System",
                             Lastname = "User",
                             LockoutEnabled = false,
                             NormalizedEmail = "TEST@TEST.COM",
-                            NormalizedUserName = "TEST@TEST.COM",
-                            PasswordHash = "AQAAAAIAAYagAAAAECKJ/6R8qwm374XSMj+G8G4du3wBHk72ldbtyeA0bPOv7fEu4Ml8Jl0kYdAHkCRX9Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGEvlTtJvjbKbB7/iyb3j5zjUrpmCRbOTppgicDWHz5KgSLdKWfgEgeGY0JUTW9ofg==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "7e7d0170-3444-4058-8f80-8494a3bb7530",
+                            SecurityStamp = "728babad-903e-4cfa-a77d-84a9fd2bf17c",
                             TaxId = "2222",
-                            TwoFactorEnabled = false,
-                            UserName = "test@test.com"
+                            TwoFactorEnabled = false
                         });
                 });
 
