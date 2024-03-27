@@ -1,4 +1,5 @@
 ﻿using System;
+using LeaveManagement.Web.Constants;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -18,8 +19,8 @@ namespace LeaveManagement.Web.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "5dcc4009-05b4-492f-9c3b-47ebccf33688", null, "Administrator", "ADMINISTRATOR" },
-                    { "5dcc4089-05b4-492f-9c3b-47ecccf33688", null, "User", "USER" }
+                    { "5dcc4009-05b4-492f-9c3b-47ebccf33688", null, Roles.Administrator, Roles.Administrator.ToUpper() },
+                    { "5dcc4089-05b4-492f-9c3b-47ecccf33688", null, Roles.User, Roles.User.ToUpper()}
                 });
 
             migrationBuilder.InsertData(
