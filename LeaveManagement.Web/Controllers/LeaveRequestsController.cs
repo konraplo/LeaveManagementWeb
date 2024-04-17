@@ -10,6 +10,7 @@ using LeaveManagement.Web.Models;
 using AutoMapper;
 using LeaveManagement.Web.Contracts;
 using Microsoft.AspNetCore.Authorization;
+using LeaveManagement.Web.Constants;
 
 namespace LeaveManagement.Web.Controllers
 {
@@ -25,31 +26,61 @@ namespace LeaveManagement.Web.Controllers
             this.leaveRequestRepository = leaveRequestRepository;
         }
 
+        [Authorize(Roles = Roles.Administrator)]
         // GET: LeaveRequests
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.LeaveRequests.Include(l => l.LeaveType);
-            return View(await applicationDbContext.ToListAsync());
+            var model = await leaveRequestRepository.GetAdminLeaveRequestList();
+            return View(model);
+        }
+
+        public async Task<IActionResult> MyLeave()
+        {
+            var model = await leaveRequestRepository.GetMyLeaveDetails();
+            return View(model);
         }
 
         // GET: LeaveRequests/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var model = await leaveRequestRepository.GetLeaveRequestAsync(id);
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var leaveRequest = await _context.LeaveRequests
-                .Include(l => l.LeaveType)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (leaveRequest == null)
-            {
-                return NotFound();
-            }
-
-            return View(leaveRequest);
+            return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveRequest(int id, bool approved)
+        {
+            try { 
+                await leaveRequestRepository.ChangeApprovalStatus(id, approved);
+            }
+            catch(Exception ex) { 
+            
+            }
+            return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Cancel(int id)
+        {
+            try
+            {
+                await leaveRequestRepository.CancelLeaveRequest(id);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return RedirectToAction(nameof(MyLeave));
+        }
+
 
         // GET: LeaveRequests/Create
         public IActionResult Create()
@@ -72,8 +103,12 @@ namespace LeaveManagement.Web.Controllers
             {
                 try
                 {
-                    await leaveRequestRepository.CreateLeaveRequest(model);
-                    return RedirectToAction(nameof(Index));
+                    var valid = await leaveRequestRepository.CreateLeaveRequest(model);
+                    if (valid)
+                    {
+                        return RedirectToAction(nameof(MyLeave));
+                    }
+                    ModelState.AddModelError(string.Empty, "allocation days exceeded");
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
