@@ -3,6 +3,7 @@ using LeaveManagement.Web.Contracts;
 using LeaveManagement.Web.Data;
 using LeaveManagement.Web.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagement.Web.Repositories
@@ -14,17 +15,21 @@ namespace LeaveManagement.Web.Repositories
         private readonly ILeaveAllocationRepository leaveAllocationRepository;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<Employee> userManager;
+        private readonly IEmailSender _emailSender;
 
         public LeaveRequestRepository(ApplicationDbContext context, 
             IMapper mapper,
             ILeaveAllocationRepository leaveAllocationRepository,
-            IHttpContextAccessor httpContextAccessor, UserManager<Employee> userManager) : base(context)
+            IHttpContextAccessor httpContextAccessor,
+            IEmailSender emailSender,
+            UserManager<Employee> userManager) : base(context)
         {
             this.context = context;
             this.mapper = mapper;
             this.leaveAllocationRepository = leaveAllocationRepository;
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
+            this._emailSender = emailSender;
         }
 
         public async Task<bool> CancelLeaveRequest(int leaveReuestId)
@@ -67,6 +72,7 @@ namespace LeaveManagement.Web.Repositories
             leaveRequest.RequestingEmployeeId = user.Id;
 
             await AddAsync(leaveRequest);
+            await _emailSender.SendEmailAsync(user.Email, "leave request submitted", $"leave request form {leaveRequest.StartDate} to {leaveRequest.EndDate}");
             return true;
         }
 

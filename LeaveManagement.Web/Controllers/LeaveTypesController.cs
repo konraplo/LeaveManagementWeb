@@ -97,12 +97,16 @@ namespace LeaveManagement.Web.Controllers
             {
                 return NotFound();
             }
-
+            var leaveType = await _repository.GetAsync(id);
+            if (leaveType != null)
+            {
+                return NotFound();
+            }
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var leaveType = _mapper.Map<LeaveType>(leaveTypeVM);
+                    _mapper.Map(leaveTypeVM, leaveType);
                     await _repository.UpdateAsync(leaveType);
                 }
                 catch (DbUpdateConcurrencyException)

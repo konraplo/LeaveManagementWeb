@@ -19,6 +19,19 @@ namespace LeaveManagement.Web.Data
             builder.ApplyConfiguration(new UserSeedConfiguration());
             builder.ApplyConfiguration(new UserRoleSeedConfiguration());
         }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            foreach (var entity in base.ChangeTracker.Entries<BaseEntity>().Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
+            {
+                entity.Entity.DateModified = DateTime.Now;
+                if(entity.State == EntityState.Added)
+                {
+                    entity.Entity.DateCreated = DateTime.Now;
+                }
+            }
+            return base.SaveChangesAsync(cancellationToken);
+        }
         public DbSet<LeaveType> LeaveTypes { get; set;}
         public DbSet<LeaveAllocation> LeaveAllocations { get; set; }
         public DbSet<LeaveRequest> LeaveRequests { get; set; }
