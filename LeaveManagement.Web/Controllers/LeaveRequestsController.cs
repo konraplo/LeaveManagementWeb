@@ -19,11 +19,13 @@ namespace LeaveManagement.Web.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILeaveRequestRepository leaveRequestRepository;
+        private readonly ILogger<LeaveRequestsController> logger;
 
-        public LeaveRequestsController(ApplicationDbContext context, ILeaveRequestRepository leaveRequestRepository)
+        public LeaveRequestsController(ApplicationDbContext context, ILeaveRequestRepository leaveRequestRepository, ILogger<LeaveRequestsController> logger)
         {
             _context = context;
             this.leaveRequestRepository = leaveRequestRepository;
+            this.logger = logger;
         }
 
         [Authorize(Roles = Roles.Administrator)]
@@ -60,8 +62,8 @@ namespace LeaveManagement.Web.Controllers
             try { 
                 await leaveRequestRepository.ChangeApprovalStatus(id, approved);
             }
-            catch(Exception ex) { 
-            
+            catch(Exception ex) {
+                throw;
             }
             return RedirectToAction(nameof(Index));
         }
@@ -74,9 +76,9 @@ namespace LeaveManagement.Web.Controllers
             {
                 await leaveRequestRepository.CancelLeaveRequest(id);
             }
-            catch (Exception ex)
-            {
-                throw;
+            catch (Exception ex) { 
+                   logger.LogError(ex, "Cancel Request error");
+            throw;
             }
             return RedirectToAction(nameof(MyLeave));
         }
@@ -112,6 +114,7 @@ namespace LeaveManagement.Web.Controllers
                 }
                 catch (DbUpdateConcurrencyException ex)
                 {
+                   logger.LogError(ex, "Create Leave Request error");
                     ModelState.AddModelError(string.Empty, ex.Message);
                 }
             }
