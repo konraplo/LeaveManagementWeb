@@ -1,5 +1,10 @@
 ﻿@using LeaveManagement.Common.Constants
+@using LeaveManagement.Data
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
 
+@inject SignInManager<Employee> SignInManager
+@inject UserManager<Employee> UserManager
 <!DOCTYPE html>
 <html dir="ltr" lang="en">
 
@@ -149,45 +154,51 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">
                         <!-- User Profile-->
+                          @if (SignInManager.IsSignedIn(User))
+                            {
                         <li>
                             <!-- User Profile-->
-                            <div class="user-profile d-flex no-block dropdown m-t-20">
-                                <div class="user-pic">
-                                    <img src="../../assets/images/users/1.jpg" alt="users"
-                                         class="rounded-circle" width="40" />
-                                </div>
-                                <div class="user-content hide-menu m-l-10">
-                                    <a href="#" class="" id="Userdd" role="button"
-                                       data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <h5 class="m-b-0 user-name font-medium">
-                                            Steave Jobs <i class="fa fa-angle-down"></i>
-                                        </h5>
-                                        <span class="op-5 user-email">varun@gmail.com</span>
-                                    </a>
-                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="Userdd">
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="ti-user m-r-5 m-l-5"></i> My Profile
-                                        </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="ti-wallet m-r-5 m-l-5"></i> My Balance
-                                        </a>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="ti-email m-r-5 m-l-5"></i> Inbox
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="ti-settings m-r-5 m-l-5"></i> Account Setting
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="javascript:void(0)">
-                                            <i class="fa fa-power-off m-r-5 m-l-5"></i> Logout
+                          
+                                <div class="user-profile d-flex no-block dropdown m-t-20">
+                                    <div class="user-pic">
+                                        <img src="~/images/users/1.jpg" alt="users"
+                                             class="rounded-circle" width="40" />
+                                    </div>
+                                    <div class="user-content hide-menu m-l-10">
+                                        <a href="#" class="" id="Userdd" role="button"
+                                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <h5 class="m-b-0 user-name font-medium">
+                                                @User.Identity?.Name <i class="fa fa-angle-down"></i>
+                                            </h5>
+                                            <span class="op-5 user-email">@User.FindFirstValue(ClaimTypes.Role)</span>
                                         </a>
                                     </div>
                                 </div>
-                            </div>
-                            <!-- End User Profile-->
+                            
                         </li>
-                      
+                        <li class="p-15 m-t-10">
+                            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                                <button type="submit" class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center">
+                                    <i class="fa fa-power-off m-r-5 m-l-5"></i> <span>logout</span>
+                                </button>
+                            </form>                           
+                        </li>
+                        }
+                        else{
+                            <li class="p-15 m-t-10">
+                                <a class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center" asp-area="Identity" asp-page="/Account/Register">
+                                    <i class="fas fa-portrait"></i>
+                                    <span> Register</span>
+                                </a>
+                            </li>
+                            <li class="p-15 m-t-10">
+                                <a class="btn d-block w-100 create-btn text-white no-block d-flex align-items-center" asp-area="Identity" asp-page="/Account/Login">
+                                    <i class="fas fa-user"></i>
+                                    <span> Login</span>
+                                </a>
+                            </li>
+                        }
+                        <!-- End User Profile-->
                         <!-- User Profile-->
                         <li class="sidebar-item">
                             <a class="sidebar-link waves-effect waves-dark sidebar-lin" asp-area="" asp-controller="Home" asp-action="Index">
